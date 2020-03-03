@@ -1,13 +1,13 @@
+# -*- Makefile -*-
 CC = gcc
 
-all: assembler.o test.o
-	$(CC) assembler.o -o assembler
-	$(CC) test.o -o test
-assembler: assembler.c
-	$(CC) -c assembler.c
+all: assembler
 
-test: test.c
-	$(CC) -c test.c
+assembler: assembler.o
+	$(CC) assembler.o `pkg-config --cflags --libs glib-2.0` -o assembler
+
+assembler.o: assembler.c
+	$(CC) -c assembler.c `pkg-config --cflags --libs glib-2.0` -o assembler.o
 
 clean:
-	rm *.o test  assembler
+	rm *.o assembler
