@@ -4,8 +4,11 @@
 #include <unistd.h>
 #include <string.h>
 #include <glib.h>
-void assembler (char *inputFile, char *outputFile);
 
+void assembler (char *inputFile, char *outputFile);
+int isCommand(char* str);
+int commandValue(char* str);
+char commands[8][5] = {"add","nand","lw","sw","beq","jalr","halt","noop"};
 int main (int argc, char **argv){
 	char *inputFile = NULL;
 	char *outputFile = NULL;
@@ -38,6 +41,7 @@ int main (int argc, char **argv){
 		fprintf(stderr, "-i  must be included\n");
 		return 1;
 	}
+
 	assembler(inputFile, outputFile);
 	//printf("outputfile is %s\n", outputFile);
 	//printf("Inputfile is %s\n", inputFile);
@@ -62,29 +66,70 @@ void assembler(char *inputFile, char *outputFile)
 	//First pass to get labels
 	while(fgets(line, 100, inFile) != NULL)
 	{
-		char* token = strtok(line," 	\n");
+		char* token = strtok(line," 	");
 
-		/*
-			manipulate labels
-		*/
+		//token is a word
+		if(!isCommand(token))
+		{
+			g_hash_table_insert(labels, token, (int*)lineNumber);
+		}
 
+		printf("%c\n", strcmp(token, "noop \n  "));
+		printf("%s %i\n",token, isCommand(token));
 		lineNumber++;
 	}
-
+	fseek(inFile, 0, SEEK_SET);
+	printf("\n\nSecond pass\n\n");
 	//Second pass to create instructions
+
+	int instructions[lineNumber][5];
+	lineNumber = 0;
 	while(fgets(line, 100, inFile) != NULL)
 	{
-		//while(token != NULL && comment == 0){
-		//	if(*token == '#'){
-		//		comment = 1;
-		//	}else
-		//	{
-		//	 printf("%s ", token);
-		//	 token = strtok(NULL, "   ");
-		//	}
-		//}
-		//comment = 0;
+		char* token = strtok(line," \t");
+		if(!isCommand(token)){
+			token = strtok(NULL," \t");
+		}
+		instructions[lineNumber][0] = commandValue(token);
+		printf("%i\n", instructions[lineNumber][0]);
+
+
+	//	while(token != NULL && comment == 0){
+	//		if(*token == '#'){
+	//			comment = 1;
+	//		}else
+	//		{
+	//			printf("%s ", token);
+	//			token = strtok(NULL, " \t");
+	//		}
+	//	}
+	//	printf("\n");
+	//	comment = 0;
 	}
 
+}
 
+int isCommand(char* str)
+{
+	int result = 0;
+	for (int i=0; i < 8; i++)
+	{
+		if(!strcmp(str,commands[i]))
+		{
+			result = 1;
+		}
+	}
+	return result;
+}
+int commandValue(char* str)
+{
+	int result = -1;
+	for (int i=0; i < 8; i++)
+	{
+		if(!strcmp(str,commands[i]))
+		{
+			result = i;
+		}
+	}
+	return result;
 }
