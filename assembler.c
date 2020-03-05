@@ -92,19 +92,28 @@ void assembler(char *inputFile, char *outputFile)
 		}
 		instructions[lineNumber][0] = commandValue(token);
 		printf("%i\n", instructions[lineNumber][0]);
-
+		int second = 0;
+		while(token != NULL && comment == 0){
+			printf("token: %s  hashtable result: %i", token,  g_hash_table_lookup(labels, token));
+			if(*token == '#'){
+				comment = 1;
+			}else if (g_hash_table_lookup(labels, token) != NULL){
+				instructions[lineNumber][second] = g_hash_table_lookup(labels, token);
+			}else{
+				instructions[lineNumber][second] = atoi(token);
+				token = strtok(NULL, " \t");
+			}
+			second++;
+		}
 		lineNumber++;
-	//	while(token != NULL && comment == 0){
-	//		if(*token == '#'){
-	//			comment = 1;
-	//		}else
-	//		{
-	//			printf("%s ", token);
-	//			token = strtok(NULL, " \t");
-	//		}
-	//	}
-	//	printf("\n");
-	//	comment = 0;
+		comment = 0;
+	}
+	for(int i = 0; i < lineNumber; i++){
+		printf("Line %i ", i);
+		for(int j = 0; j < 4; j++){
+			printf(" %i ", instructions[i][j]);
+		}
+		printf("\n");
 	}
 
 }
