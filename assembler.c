@@ -8,7 +8,7 @@
 void assembler (char *inputFile, char *outputFile);
 int isCommand(char* str);
 int commandValue(char* str);
-char commands[8][5] = {"add","nand","lw","sw","beq","jalr","halt","noop"};
+char commands[9][6] = {"add","nand","lw","sw","beq","jalr","halt","noop",".fill"};
 int main (int argc, char **argv){
 	char *inputFile = NULL;
 	char *outputFile = NULL;
@@ -66,16 +66,15 @@ void assembler(char *inputFile, char *outputFile)
 	//First pass to get labels
 	while(fgets(line, 100, inFile) != NULL)
 	{
-		char* token = strtok(line," 	");
+		char* token = strtok(line," \t\n\v\f\r");
 
-		//token is a word
+		//token is first word
 		if(!isCommand(token))
 		{
 			g_hash_table_insert(labels, token, (int*)lineNumber);
 		}
 
-		printf("%c\n", strcmp(token, "noop \n  "));
-		printf("%s %i\n",token, isCommand(token));
+		printf("%s %i\n",token, commandValue(token));
 		lineNumber++;
 	}
 	fseek(inFile, 0, SEEK_SET);
@@ -83,17 +82,18 @@ void assembler(char *inputFile, char *outputFile)
 	//Second pass to create instructions
 
 	int instructions[lineNumber][5];
+
 	lineNumber = 0;
 	while(fgets(line, 100, inFile) != NULL)
 	{
-		char* token = strtok(line," \t");
+		char* token = strtok(line," \t\n\v\f\r");
 		if(!isCommand(token)){
-			token = strtok(NULL," \t");
+			token = strtok(NULL," \t\n\v\f\r");
 		}
 		instructions[lineNumber][0] = commandValue(token);
 		printf("%i\n", instructions[lineNumber][0]);
 
-
+		lineNumber++;
 	//	while(token != NULL && comment == 0){
 	//		if(*token == '#'){
 	//			comment = 1;
@@ -121,10 +121,11 @@ int isCommand(char* str)
 	}
 	return result;
 }
+
 int commandValue(char* str)
 {
 	int result = -1;
-	for (int i=0; i < 8; i++)
+	for (int i=0; i < 9; i++)
 	{
 		if(!strcmp(str,commands[i]))
 		{
