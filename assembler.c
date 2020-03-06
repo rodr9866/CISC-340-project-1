@@ -11,7 +11,7 @@ int commandValue(char* str);
 
 long int jType(int instructions[4]);
 long int rType(int instructions[4]);
-long int iType(int instructions[4], GHashTable* labels);
+long int iType(int instructions[4], GHashTable* labels, int lineNumber);
 long int oType(int instructions[4]);
 
 char commands[9][6] = {"add","nand","lw","sw","beq","jalr","halt","noop",".fill"};
@@ -81,12 +81,12 @@ void assembler(char *inputFile, char *outputFile)
 		{
 			printf("LABEL: %s VALUE: %i\n",token,lineNumber);
 			char* label = (char*)malloc(10*sizeof(char));
-			strcpy(label, token);
-			g_hash_table_insert(labels, token, (int*)lineNumber);
+			gchar *str = "string";
+			str = g_strdup(token);
+			g_hash_table_insert(labels, str, (int*)lineNumber);
 			free(label);
 		}
 
-		printf("%s %i\n",token, commandValue(token));
 		lineNumber++;
 	}
 	fseek(inFile, 0, SEEK_SET);
@@ -133,7 +133,7 @@ void assembler(char *inputFile, char *outputFile)
 				if(*token == '#'){
 					comment = 1;
 				}else if (g_hash_table_lookup(labels, token) != NULL){
-					instructions[lineNumber][argument] = *(int*)g_hash_table_lookup(labels, token);
+					instructions[lineNumber][argument] = g_hash_table_lookup(labels, token);
 				}else{
 					instructions[lineNumber][argument] = atoi(token);
 				}
@@ -149,7 +149,7 @@ void assembler(char *inputFile, char *outputFile)
 			if(opcode == 0 || opcode == 1){
 				machineInstructions[lineNumber] = rType(instructions[lineNumber]);
 			}else if(2 <= opcode && opcode <= 4){
-				machineInstructions[lineNumber] = iType(instructions[lineNumber], labels);
+				machineInstructions[lineNumber] = iType(instructions[lineNumber], labels, lineNumber);
 			}else if(opcode == 6){
 				machineInstructions[lineNumber] = jType(instructions[lineNumber]);
 			}else if(7 <= opcode && opcode <= 8){
@@ -235,13 +235,21 @@ long int rType(int instructions[4])
 
 	return result;
 }
-long int iType(int instructions[4], GHashTable* labels)
+long int iType(int instructions[4], GHashTable* labels, int lineNumber)
+//This needs work to handle beq, currently doesn't handle it
+//We have to figure out someway to make the offset only 16 bits because otherwise if it is negative it will 
+//mess everything up
 {
 	long int result       = 0;
 	long int opcode       = instructions[0];
 	long int regA         = instructions[1];
 	long int regB         = instructions[2];
-	long int offset_field = instructions[3];
+	long int offset_field;
+	if(opcode == 4){
+		offset_field = (instructions[3] - lineNumber);
+	}else{
+	offset_field = instructions[3];
+	}
 	opcode = opcode<<22;
 	regA   = regA<<19;
 	regB   = regB<<16;
