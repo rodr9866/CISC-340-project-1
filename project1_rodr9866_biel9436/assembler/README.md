@@ -10,7 +10,7 @@
 	./asm -i {input.as} > {output.mc}
 
 # Dependent files
-	assembler.c
+	assembler.c - code that converts assembly to machine code
 	Makefile - for compiling assembler.c with glibrary and making an executable
 
 # Test files
