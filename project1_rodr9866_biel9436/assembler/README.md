@@ -1,19 +1,19 @@
-#Notes
+# Notes
 
 	03/06/2020 - part 1 of assembler has been completed.
 
-#How to run
+# How to run
 	With one input file to print to screen
 	./asm -i {input.as}
 	With one input file to write to an output file
 	./asm -i {input.as} -o {output.mc}
 	./asm -i {input.as} > {output.mc}
 
-#Dependent files
+# Dependent files
 	assembler.c
 	Makefile - for compiling assembler.c with glibrary and making an executable
 
-#Test files
+# Test files
  	**All errors throw a message and abort unless marked otherwise**
 	1. bad_opcodes.as - tests faulty commands
 	2. duplicate_labels.as - tests duplicate labels        
