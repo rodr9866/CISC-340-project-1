@@ -14,11 +14,11 @@
 	Makefile - for compiling assembler.c with glibrary and making an executable
 
 # Test files
- 	**All errors throw a message and abort unless marked otherwise**
+ 	** All errors throw a message and abort unless marked otherwise **
 	1. bad_opcodes.as - tests faulty commands
 	2. duplicate_labels.as - tests duplicate labels        
-	3. empty.as - tests an empty file. **produces no errors and no output**  
-	4. every_command.as  - tests every valid command **produces no errors**      
+	3. empty.as - tests an empty file. ** produces no errors and no output **  
+	4. every_command.as  - tests every valid command ** produces no errors **      
 	5. label_same_as_command.as - tests for labels with the same name as a command
 	6. label_starts_with_number.as - tests for invalid labels starting with a non char
 	7. label_too_long.as - tests for long labels
