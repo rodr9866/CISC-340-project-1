@@ -196,8 +196,9 @@ void assembler(char *inputFile, char *outputFile)
 	for(int i = 0; i < lineNumber; i++){
 		if (outFile != NULL){
 			fprintf(outFile, "%li\n",machineInstructions[i]);
+		}else{
+			printf("%li\n",machineInstructions[i]);
 		}
-		printf("%li\n",machineInstructions[i]);
 	}
 
 }
