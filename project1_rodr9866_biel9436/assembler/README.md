@@ -15,14 +15,14 @@
 
 # Test files
  	**All errors throw a message and exit unless marked otherwise**
-	1. bad_opcodes.asm - tests faulty commands
-	2. duplicate_labels.asm - tests duplicate labels        
-	3. empty.asm - tests an empty file. **produces no errors and no output**  
-	4. every_command.asm  - tests every valid command **produces no errors**      
-	5. label_same_as_command.asm - tests for labels with the same name as a command
-	6. label_starts_with_number.asm - tests for invalid labels starting with a non char
-	7. label_too_long.asm - tests for long labels
-	8. offset_too_big.asm - tests for too large non label offsets
-	9. register_out_of_range.asm - tests for register inputs within 0-7
-	10. undefined_labels.asm - tests the us of an undefined label	 
-	11. program.asm - default assembly program provided by the assignment
+	1. bad_opcodes.as - tests faulty commands
+	2. duplicate_labels.as - tests duplicate labels        
+	3. empty.as - tests an empty file. **produces no errors and no output**  
+	4. every_command.as  - tests every valid command **produces no errors**      
+	5. label_same_as_command.as - tests for labels with the same name as a command
+	6. label_starts_with_number.as - tests for invalid labels starting with a non char
+	7. label_too_long.as - tests for long labels
+	8. offset_too_big.as - tests for too large non label offsets
+	9. register_out_of_range.as - tests for register inputs within 0-7
+	10. undefined_labels.as - tests the us of an undefined label	 
+	11. program.as - default assembly program provided by the assignment
