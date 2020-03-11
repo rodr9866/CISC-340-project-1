@@ -22,6 +22,7 @@ int getDestReg(int mcInstruction);
 int getRegA(int mcInstruction);
 int getRegB(int mcInstruction);
 void print_state(statetype *stateptr);
+void print_stats(int totalInstructions);
 void simulator(char *inputFile, char *outputFile);
 void add(statetype *stateptr);
 void nand(statetype *stateptr);
@@ -139,7 +140,8 @@ void simulator(char *inputFile, char *outputFile)
 		instructionCount++;
 	}
 
-	printf("Machine halted\nINSTRUCTIONS: %i", instructionCount);
+	printf("Machine halted\n");
+	print_stats(instructionCount);
 }
 
 void add(statetype *stateptr){
@@ -186,24 +188,9 @@ void beq(statetype *stateptr){
 	}
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void print_stats(int totalInstructions){
+	printf("INSTRUCTIONS: %i\n",totalInstructions);
+}
 
 void print_state(statetype *stateptr){
 	//prints the current state of memory, registers and the PC
