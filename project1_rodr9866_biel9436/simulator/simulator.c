@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <string.h>
 
-#define NUMMEMORY 10
+#define NUMMEMORY 1000
 #define NUMREGS 8
 
 typedef struct state_struct {
@@ -34,9 +34,6 @@ void beq(statetype *stateptr);
 
 void jalr(statetype *stateptr);
 
-//NOT SURE IF NEEDED
-void halt();
-void noop();
 
 
 int main(int argc, char **argv) {
@@ -115,12 +112,11 @@ void simulator(char *inputFile, char *outputFile)
 	fclose(inFile);
 
 	(&state)->reg[0] = 0;
-	int opcode = getOpcode((&state)->mem[(&state)->pc]);
 
-	while(opcode != 6){
+	while(state.pc < state.num_memory){
 		//while not a halt command
 		print_state(&state);
-		opcode = getOpcode((&state)->mem[(&state)->pc]);
+		int opcode = getOpcode((&state)->mem[(&state)->pc]);
 		//execute correct command based on opcode
 		if(opcode == 0){
 			add(&state);
@@ -132,6 +128,11 @@ void simulator(char *inputFile, char *outputFile)
 			sw(&state);
 		}else if(opcode == 4){
 			beq(&state);
+		}else if(opcode == 5){
+			jalr(&state);
+		}else if(opcode == 6){
+			printf("Machine halted\n");
+			break;
 		}
 		//printf("Opcode: %i, RegA: %i, RegB: %i, Immediate: %i\n",getOpcode((&state)->mem[(&state)->pc]), getRegA((&state)->mem[(&state)->pc]),getRegB((&state)->mem[(&state)->pc]),getImmediate((&state)->mem[(&state)->pc]));
 
@@ -140,7 +141,6 @@ void simulator(char *inputFile, char *outputFile)
 		instructionCount++;
 	}
 
-	printf("Machine halted\n");
 	print_stats(instructionCount);
 }
 
@@ -186,6 +186,14 @@ void beq(statetype *stateptr){
 	if((stateptr->reg[regA]) == (stateptr->reg[regB])){
 		stateptr->pc = stateptr->pc + offset;
 	}
+}
+
+void jalr(statetype *stateptr){
+	int regA = getRegA(stateptr->mem[stateptr->pc]);
+	int regB = getRegB(stateptr->mem[stateptr->pc]);
+
+	stateptr->reg[regA] = (stateptr->pc + 1);
+	stateptr->pc = stateptr->reg[regB] -1;
 }
 
 void print_stats(int totalInstructions){
