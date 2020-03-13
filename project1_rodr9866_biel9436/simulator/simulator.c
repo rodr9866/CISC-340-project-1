@@ -83,11 +83,11 @@ void simulator(char *inputFile, char *outputFile)
 	int lineNumber = 0;
 	int instructionCount = 0;
 
-
+/*
 	if(outputFile != NULL){
 		outFile = fopen(outputFile, "w");
 	}
-
+*/
 	while (fgets(line, 100,inFile) != NULL){
 		lineNumber++;
 		//print_state(&state);
