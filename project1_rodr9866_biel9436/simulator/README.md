@@ -14,5 +14,6 @@
 
 # Test files
 **Each file has a respective *.mc file of assembled machine code**
+	
 	1. jumps.asm - tests commands that shift the PC
 	2. nand_sw.asm - tests sw and nand
