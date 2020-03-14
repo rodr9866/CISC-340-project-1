@@ -17,3 +17,4 @@
 	
 	1. jumps.asm - tests commands that shift the PC
 	2. nand_sw.asm - tests sw and nand
+	3. program.asm - default test provided by assignment
